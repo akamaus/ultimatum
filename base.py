@@ -6,7 +6,7 @@ class BaseProposer:
     def propose(self):
         raise NotImplementedError()
 
-    def mutate(self):
+    def mutate(self, alpha: float):
         raise NotImplementedError()
 
 class BaseResponder:
@@ -16,5 +16,5 @@ class BaseResponder:
     def respond(self, part):
         raise NotImplementedError()
 
-    def mutate(self):
+    def mutate(self, alpha: float):
         raise NotImplementedError()
