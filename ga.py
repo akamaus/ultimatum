@@ -5,6 +5,12 @@ import strategies as S
 from collections import Counter
 
 
+class Individual:
+    def __init__(self, proposer, responder):
+        self.proposer = proposer
+        self.responder = responder
+
+
 class Population:
     def __init__(self, mutation_strength=0.05, culling_ratio=0.1, discount=0.9):
         self.proposers = []
