@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 from base import BaseProposer, BaseResponder
 
@@ -67,3 +68,51 @@ class ProbResponder(BaseResponder):
     def mutate(self, alpha):
         self.accept_probs += np.random.randn(self.bins)
         np.clip(self.accept_probs, 0,1, out=self.accept_probs)
+
+
+class Chooser:
+    choices = {}
+    def __init__(self, bins=10):
+        super().__init__()
+        self.bins = bins
+        self.probs = np.random.random(bins)
+        self._normalize()
+
+        if bins not in self.choices:
+            self.choices[bins] = np.linspace(0,1, bins)
+
+    def _normalize(self):
+        self.probs /= np.sum(self.probs)
+
+    def random_choice(self):
+        return np.random.choice(self.choices[self.bins], p=self.probs)
+
+    def mutate(self, alpha:float):
+        k = np.random.randint(0, self.bins)
+        self.probs[k] += np.random.randn() * alpha
+        np.clip(self.probs, 0, 1, out=self.probs)
+        self._normalize()
+
+
+class ChooserProposer(BaseProposer, Chooser):
+    def __init__(self, bins=10):
+        BaseProposer.__init__(self)
+        Chooser.__init__(self, bins)
+
+    def propose(self):
+        return self.random_choice()
+
+    def mutate(self, alpha: float):
+        Chooser.mutate(self, alpha)
+
+class ChooserResponder(BaseResponder, Chooser):
+    def __init__(self, bins=10):
+        Chooser.__init__(self, bins)
+        BaseProposer.__init__(self)
+
+    def respond(self, part):
+        bound = self.random_choice()
+        return bound < part
+
+    def mutate(self, alpha: float):
+        Chooser.mutate(self, alpha)
