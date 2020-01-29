@@ -95,7 +95,7 @@ class Chooser:
 
 
 class ChooserProposer(BaseProposer, Chooser):
-    def __init__(self, bins=10):
+    def __init__(self, bins=100):
         BaseProposer.__init__(self)
         Chooser.__init__(self, bins)
 
@@ -105,8 +105,9 @@ class ChooserProposer(BaseProposer, Chooser):
     def mutate(self, alpha: float):
         Chooser.mutate(self, alpha)
 
+
 class ChooserResponder(BaseResponder, Chooser):
-    def __init__(self, bins=10):
+    def __init__(self, bins=100):
         Chooser.__init__(self, bins)
         BaseProposer.__init__(self)
 

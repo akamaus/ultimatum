@@ -3,6 +3,9 @@ class BaseProposer:
     def __init__(self):
         self.fitness = 0
 
+    def zero_fitness(self):
+        self.fitness = 0
+
     def propose(self):
         raise NotImplementedError()
 
@@ -11,6 +14,9 @@ class BaseProposer:
 
 class BaseResponder:
     def __init__(self):
+        self.fitness = 0
+
+    def zero_fitness(self):
         self.fitness = 0
 
     def respond(self, part):
